@@ -53,14 +53,22 @@ const Main = () => {
             </div>
           </>
         ) : (
-          <div className="resultData">
+          <div className="result">
             <div className="result_title">
               <img src={assets.user_icon} alt="user_icon" />
               <p>{recentPrompt}</p>
             </div>
             <div className="result_data">
               <img src={assets.gemini_icon} alt="gemini_icon" />
-              {loading ? <p>Loading...</p> : <p>{resultData}</p>}
+              {loading ? (
+                <dir className="loader">
+                  <hr />
+                  <hr />
+                  <hr />
+                </dir>
+              ) : (
+                <p>{resultData}</p>
+              )}
             </div>
           </div>
         )}
