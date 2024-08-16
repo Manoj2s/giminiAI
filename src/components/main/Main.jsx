@@ -13,7 +13,6 @@ const Main = () => {
     setInput,
     resultData,
   } = useContext(context);
-  
 
   return (
     <div className="main">

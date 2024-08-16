@@ -12,14 +12,21 @@ const ContextProvider = (props) => {
   const [resultData, setResultData] = useState("");
 
   const onSent = async () => {
-    setResultData("");
-    setLoading(true);
-    setShowResult(true);
-    setRecentPrompt(input);
-    const response = await run(input);
-    setResultData(response);
-    setLoading(false);
-    setInput("");
+    setResultData(""); 
+    setLoading(true); 
+    setShowResult(true); 
+    setRecentPrompt(input); 
+    try {
+      const response = await run(input); 
+      console.log("AI Response:", response);
+      setResultData(response); 
+    } catch (error) {
+      console.error("Error fetching AI response:", error);
+      setResultData("Error fetching response."); 
+    } finally {
+      setLoading(false); 
+      setInput(""); 
+    }
   };
 
   const contextValue = {

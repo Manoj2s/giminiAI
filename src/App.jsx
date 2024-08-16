@@ -1,14 +1,14 @@
+// App.js
 import React from "react";
-import Sidebar from "./components/sidebar/Sidebar";
+import ContextProvider from "./context/Context";
 import Main from "./components/main/Main";
 
-const App = () => {
+function App() {
   return (
-    <>
-      <Sidebar />
-      <Main/>
-    </>
+    <ContextProvider>
+      <Main />
+    </ContextProvider>
   );
-};
+}
 
 export default App;
