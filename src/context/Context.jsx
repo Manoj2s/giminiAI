@@ -9,24 +9,49 @@ const ContextProvider = (props) => {
   const [prevPrompt, setPrevPrompt] = useState([]);
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [resultData, setResultData] = useState("");
+  const [resultData, setResultData] = useState([]);
+
+  const delayPara = (index, nextElement) => {
+    setTimeout(() => {
+      setResultData((prev) => [...prev, nextElement]);
+    }, 150 * index);
+  };
 
   const onSent = async () => {
-    setResultData(""); 
-    setLoading(true); 
-    setShowResult(true); 
-    setRecentPrompt(input); 
-    try {
-      const response = await run(input); 
-      console.log("AI Response:", response);
-      setResultData(response); 
-    } catch (error) {
-      console.error("Error fetching AI response:", error);
-      setResultData("Error fetching response."); 
-    } finally {
-      setLoading(false); 
-      setInput(""); 
-    }
+    setResultData([]);
+    setLoading(true);
+    setShowResult(true);
+    setRecentPrompt(input);
+    setPrevPrompt(prev => [...prev, input])
+
+    const response = await run(input);
+
+    let responseArray = response.split("**");
+    let newResponse = responseArray.map((part, index) => {
+      if (index % 2 === 1) {
+        return <b key={index}>{part}</b>;
+      } else {
+        return part;
+      }
+    });
+
+    let finalResponse = newResponse.flatMap((part, index) =>
+      typeof part === "string"
+        ? part.split("*").map((text, i) => (
+            <span key={`${index}-${i}`}>
+              {text}
+              <br />
+            </span>
+          ))
+        : [part]
+    );
+
+    finalResponse.forEach((element, i) => {
+      delayPara(i, element);
+    });
+
+    setLoading(false);
+    setInput("");
   };
 
   const contextValue = {
